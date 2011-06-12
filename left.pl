@@ -18,7 +18,8 @@ $device;
 open IN, "<${devFile}" or die $!;
 while (<IN>) {
 	if ($_) {
-		$device  .= "<li><a href=\"../content.html?dev=${_}}\" target=\"content\">${_}</a></li>";
+		my @values = split(' ', $_);
+		$device  .= "<li><a href=\"content.pl?dev=${values[0]}\" target=\"content\">${_}</a></li>";
 	}
 }
 
