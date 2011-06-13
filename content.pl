@@ -7,10 +7,11 @@ my $cgi = new CGI;
 
 my $devId = $cgi->param("dev");
 
-my $policyFile = "${devId}.txt";
+my $policyFile = "../htdocs/${devId}.txt";
 my $jsbuf;
 my $index = 0;
-open IN, "<${policyFile}" or die $!;
+$jsbuf .= "var devId = \"${devId}\";\n";
+open IN, "<${policyFile}";
 while (<IN>) {
     if($_) {
 	my @values = split(' ', $_);	
