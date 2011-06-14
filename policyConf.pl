@@ -3,6 +3,7 @@
 ##  policyConf.pl-- policy configuration
 ##
 use CGI;  
+use File::Copy;
 $query = CGI->new(\*STDIN);
 $device = $query->param('deviceId');
 $polName = $query->param('polName');
@@ -10,11 +11,11 @@ $polType = $query->param('polType');
 $polAddr = $query->param('polAddr');
 $polMask = $query->param('polMask');
 
-print "Content-type: text/plain; charset=iso-8859-1\n\n";
-
 my $policyFile;
+my $policyFileBk;
 
 $policyFile = "../htdocs/${device}.txt";
+$policyFileBk = "../htdocs/${device}.txt.bk";
 
 my $outbuf = "${polName} ${polType} ";
 if($polType == "0")
@@ -26,8 +27,21 @@ else
 	$outbuf .= "${polAddr}";
 }
 
-open OUT, ">>${policyFile}" or die $!;
-print OUT "${outbuf}\n";
+copy($policyFile,$policyFileBk) or die "Copy failed: $!";
+open OUT, ">${policyFile}" or die $!;
+open IN, "<${policyFileBk}" or die $!;
+while (<IN>) {
+	if($_ =~ m/$polName/)
+	{
+		print OUT "${outbuf}\n";
+	}
+	else
+	{
+		print OUT "${_}"	
+	}
+}
+
 close OUT;
 
+print "Content-type: text/html; charset=iso-8859-1\n\n";
 

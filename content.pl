@@ -20,7 +20,6 @@ while (<IN>) {
     }
 }
 
-
 print "Content-type: text/html; charset=iso-8859-1\n\n";
 
 open(TEMPLATE, "../htdocs/content.html");
