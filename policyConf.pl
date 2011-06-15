@@ -27,6 +27,8 @@ else
 	$outbuf .= "${polAddr}";
 }
 
+my $addPolicy= 1;
+
 copy($policyFile,$policyFileBk) or die "Copy failed: $!";
 open OUT, ">${policyFile}" or die $!;
 open IN, "<${policyFileBk}" or die $!;
@@ -34,11 +36,17 @@ while (<IN>) {
 	if($_ =~ m/$polName/)
 	{
 		print OUT "${outbuf}\n";
+		$addPolicy = 0;
 	}
 	else
 	{
 		print OUT "${_}"	
 	}
+}
+
+if($addPolicy)
+{
+	print OUT "${outbuf}\n";
 }
 
 close OUT;
