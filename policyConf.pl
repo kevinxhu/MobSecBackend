@@ -28,7 +28,8 @@ else
 }
 
 my $addPolicy= 1;
-
+if(-e $policyFile)
+{
 copy($policyFile,$policyFileBk) or die "Copy failed: $!";
 open OUT, ">${policyFile}" or die $!;
 open IN, "<${policyFileBk}" or die $!;
@@ -50,6 +51,18 @@ if($addPolicy)
 }
 
 close OUT;
+}
+else
+{
+open OUT, ">${policyFile}" or die $!;
+print OUT "${outbuf}\n";
+close OUT;
+}
 
 print "Content-type: text/html; charset=iso-8859-1\n\n";
-
+print "<html>";
+print "<head>";
+print "<body onLoad=\"window.close();\">";
+print "</body>";
+print "</head>";
+print "</html>";
